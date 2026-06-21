@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
-from app.schemas.credito_schema import SolicitudCreditoCreate, CreditoResponse
+from app.schemas.credito_schema import SolicitudCreditoCreate, CreditoResponse, PagoCuotaCreate, PagoCuotaResponse
 from app.services.credito_service import CreditoService
 from app.config.database import get_db
 
@@ -18,11 +18,12 @@ def solicitar_credito(solicitud: SolicitudCreditoCreate, db: Session = Depends(g
     return servicio.registrar_solicitud(solicitud)
 
 @router.post(
-    "/creditos/{id_credito}/aprobar",
-    response_model=CreditoResponse,
-    summary="Aprobar crédito y estructurar tabla de amortización",
-    description="Cambia el estado del crédito a 'Entregado' y calcula secuencialmente el cronograma de cuotas automáticas."
+    "/creditos/pagar-cuota",
+    response_model=PagoCuotaResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Registrar pago de cuota",
+    description="Registra el abono a una cuota específica del préstamo y recalculación de la tabla de amortización."
 )
-def aprobar_credito(id_credito: int, plazo_meses: int = Query(6, gte=1), db: Session = Depends(get_db)):
+def registrarPagoCuota(pago: PagoCuotaCreate, db: Session = Depends(get_db)):
     servicio = CreditoService(db)
-    return servicio.aprobar_y_generar_tabla(id_credito, plazo_meses)
+    return servicio.registrar_pago_cuota(pago)

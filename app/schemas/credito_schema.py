@@ -26,3 +26,19 @@ class CreditoResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class PagoCuotaCreate(BaseModel):
+    id_credito: int = Field(..., description="ID del crédito al que pertenece la cuota")
+    numero_cuota: int = Field(..., gt=0, description="Número secuencial de la cuota a pagar")
+    monto_pagado: Decimal = Field(..., gt=0, max_digits=10, decimal_places=2, description="Monto exacto que se está abonando/pagando")
+
+class PagoCuotaResponse(BaseModel):
+    id_pago: int = Field(..., description="ID único del registro de pago")
+    id_credito: int
+    numero_cuota: int
+    monto_pagado: float
+    fecha_pago: datetime
+    estado_cuota_actual: str = Field(..., description="Nuevo estado de la cuota (ej. 'Pagado', 'Abonado')")
+
+    class Config:
+        from_attributes = True
