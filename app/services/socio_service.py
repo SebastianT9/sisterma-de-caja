@@ -2,7 +2,7 @@ import random
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from app.repositories.socio_repository import SocioRepository
-from app.schemas.socio_schema import SocioCreate
+from app.schemas.socio_schemas import SocioCreate
 from app.models.socio import Socio
 
 class SocioService:

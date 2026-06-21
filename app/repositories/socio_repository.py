@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.models.socio import Socio
 from app.models.cuenta import Cuenta
-from app.schemas.socio_schema import SocioCreate
+from app.schemas.socio_schemas import SocioCreate
 from app.models.transaccion import TransaccionDiario
 from typing import Optional, List
 

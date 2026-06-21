@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
-from app.schemas.socio_schema import SocioCreate, SocioResponse, ConsultaMovimientosResponse
-from app.services.socio_service import SocioService, ConsultaService
+from app.schemas.socio_schemas import SocioCreate, SocioResponse, ConsultaMovimientosResponse
+from app.services.socio_service import SocioService
+from app.services.consulta_service import ConsultaService
 from app.config.database import get_db  # Generador de sesiones de base de datos
 
 router = APIRouter()

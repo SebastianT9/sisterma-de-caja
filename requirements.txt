@@ -1,5 +1,4 @@
-fastapi==0.111.0
-uvicorn==0.30.1
-sqlalchemy==2.0.30
-pydantic==2.7.2
-psycopg2-binary==2.9.9  # O uvicorn[standard] / aiosqlite si usan SQLite para pruebas locales
+fastapi>=0.115.0
+uvicorn>=0.30.0
+sqlalchemy>=2.0.30
+pydantic>=2.9.0
