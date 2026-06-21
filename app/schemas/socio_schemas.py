@@ -29,3 +29,20 @@ class SocioResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+# DTO que representa un movimiento individual en la consulta
+class MovimientoDTO(BaseModel):
+    id_transaccion: int
+    tipo_movimiento: str
+    monto: float
+    fecha_transaccion: datetime
+
+    class Config:
+        from_attributes = True
+
+# DTO de salida para la respuesta del Servicio Web (REQ-F-04)
+class ConsultaMovimientosResponse(BaseModel):
+    cedula: str
+    numero_cuenta: str
+    saldo_actual: float
+    ultimos_movimientos: List[MovimientoDTO]

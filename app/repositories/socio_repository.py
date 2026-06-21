@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 from app.models.socio import Socio
 from app.models.cuenta import Cuenta
 from app.schemas.socio_schema import SocioCreate
+from app.models.transaccion import TransaccionDiario
+from typing import Optional, List
 
 class SocioRepository:
     def __init__(self, db: Session):
@@ -32,3 +34,20 @@ class SocioRepository:
         self.db.commit()
         self.db.refresh(nueva_cuenta)
         return nueva_cuenta
+    
+class ConsultaRepository:
+    def _init_(self, db: Session):
+        self.db = db
+
+    def verificar_socio_y_cuenta(self, cedula: str, numero_cuenta: str) -> Optional[Cuenta]:
+        # Busca la cuenta y valida que pertenezca al socio con la cédula provista
+        return self.db.query(Cuenta).join(Socio).filter(
+            Socio.cedula == cedula,
+            Cuenta.numero_cuenta == numero_cuenta
+        ).first()
+
+    def obtener_ultimos_tres_movimientos(self, id_cuenta: int) -> List[TransaccionDiario]:
+        # Corresponde al diseño exacto: SELECT TOP 3 ... ORDER BY fecha DESC
+        return self.db.query(TransaccionDiario).filter(
+            TransaccionDiario.id_cuenta == id_cuenta
+        ).order_by(TransaccionDiario.fecha_transaccion.desc()).limit(3).all()
