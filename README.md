@@ -20,3 +20,7 @@ Este sistema implementa una arquitectura limpia por capas:
 * **Capa de Servicios:** Lógica de negocio y reglas financieras.
 * **Capa de Dominio/Modelos:** Entidades del core bancario.
 * **Capa de Persistencia:** Acceso a Base de Datos relacional.
+
+## 3. Instalación de Requirementes (Se debe correr el siguiente comando en consola para iniciar el programa)
+
+* **Instalar requerimientos:** python -m pip install -r requirements.txt
