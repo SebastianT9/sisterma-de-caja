@@ -24,3 +24,5 @@ Este sistema implementa una arquitectura limpia por capas:
 ## 3. Instalación de Requirementes (Se debe correr el siguiente comando en consola para iniciar el programa)
 
 * **Instalar requerimientos:** python -m pip install -r requirements.txt
+* **Correr el código:** python -m uvicorn app.main:app --reload
+* **Correr el código:** Abrir el enlace de con la siguiente ruta de manera local http://127.0.0.1:8000/docs
