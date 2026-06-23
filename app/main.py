@@ -6,6 +6,7 @@ import app.models.cuenta
 import app.models.transaccion
 import app.models.credito
 import app.models.plan_cuentas
+import app.models.amortizacion
 app = FastAPI(
     title="Sistema de Cajas de Ahorro",
     description="API Backend automatizada para la gestión financiera, transaccional y contable.",

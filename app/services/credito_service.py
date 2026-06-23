@@ -50,3 +50,43 @@ class CreditoService:
         self.db.commit()
         self.db.refresh(credito)
         return credito
+    def registrar_pago_cuota(self, pago):        
+        # DEBUG TEMPORAL: Imprime lo que recibe para comprobar tipos y valores
+        print(f"Buscando cuota -> id_credito: {pago.id_credito} (Tipo: {type(pago.id_credito)}), cuota N°: {pago.numero_cuota} (Tipo: {type(pago.numero_cuota)})")
+        
+        # Buscamos la cuota asegurando que los tipos coincidan forzando un entero si es necesario
+        cuota = self.db.query(TablaAmortizacion).filter(
+            TablaAmortizacion.id_credito == int(pago.id_credito),
+            TablaAmortizacion.numero_cuota == int(pago.numero_cuota)
+        ).first()
+        
+        # Validación por si el ID de crédito o número de cuota no existen
+        if not cuota:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"La cuota N° {pago.numero_cuota} para el crédito ID {pago.id_credito} no fue encontrada en el sistema."
+            )
+            
+        # 3. Cambiamos el estado de la cuota a Pagado
+        cuota.estado_pago = "Pagado"
+        
+        # 4. Guardamos los cambios de SQLAlchemy en la base de datos
+        try:
+            self.db.commit()
+            self.db.refresh(cuota)
+        except Exception as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                detail=f"Error al confirmar el pago en la base de datos: {str(e)}"
+            )
+        
+        # 5. Retornamos los datos limpios mapeados para el PagoCuotaResponse
+        return {
+            "id_pago": cuota.id_cuota,  
+            "id_credito": cuota.id_credito,
+            "numero_cuota": cuota.numero_cuota,
+            "monto_pagado": float(pago.monto_pagado),
+            "fecha_pago": datetime.utcnow(),  # Recomendado usar utcnow() consistente con tu app
+            "estado_cuota_actual": cuota.estado_pago
+        }
