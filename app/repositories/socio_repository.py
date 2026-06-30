@@ -36,7 +36,7 @@ class SocioRepository:
         return nueva_cuenta
     
 class ConsultaRepository:
-    def _init_(self, db: Session):
+    def __init__(self, db: Session): # <-- Con doble guion bajo
         self.db = db
 
     def verificar_socio_y_cuenta(self, cedula: str, numero_cuenta: str) -> Optional[Cuenta]:
